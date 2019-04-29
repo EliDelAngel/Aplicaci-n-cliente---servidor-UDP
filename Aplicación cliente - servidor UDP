@@ -1,0 +1,94 @@
+package EjercicioUDP;
+
+import java.io.IOException;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.net.SocketException;
+import java.net.UnknownHostException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+public class Cliente {
+    public static void main(String[] args) {
+        
+        final int puertoServidor = 5000;
+        byte[] buffer = new byte[1024];
+        
+        try {
+            InetAddress direccionServidor = InetAddress.getByName("localhost");
+            DatagramSocket socketUDP = new DatagramSocket();
+            
+            String mensaje = "mensaje desde el cliente";
+            buffer = mensaje.getBytes();
+            DatagramPacket respuestaCliente = new DatagramPacket(buffer, buffer.length, direccionServidor, puertoServidor);
+            System.out.println("Sen envian los datos");
+            socketUDP.send(respuestaCliente);
+            
+            DatagramPacket respuesta = new DatagramPacket(buffer, buffer.length);
+            socketUDP.receive(respuesta);
+            System.out.println("Sen reciben los datos");
+            mensaje = new String(respuesta.getData());
+            System.out.println(mensaje);
+            
+            socketUDP.close();
+            
+        } catch (SocketException ex) {
+            Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (UnknownHostException ex) {
+            Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+        
+        
+        
+        
+        package EjercicioUDP;
+
+import java.io.IOException;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.net.SocketException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+public class Servidor {
+
+    public static void main(String[] args) {
+
+        final int puerto = 5000;
+        byte[] buffer = new byte[1024];
+
+        try {
+            System.out.println("Iniciando");
+            DatagramSocket socketUDP = new DatagramSocket(puerto);
+            DatagramPacket peticion = new DatagramPacket(buffer, buffer.length);
+            
+            socketUDP.receive(peticion);
+            System.out.println("Recibiendo informacion");
+            String mensaje = new String(peticion.getData());
+            System.out.println(mensaje);
+            
+            int puertocliente = peticion.getPort();
+            InetAddress direccion = peticion.getAddress();
+            
+            mensaje = "Mensaje del servidor";
+            buffer = mensaje.getBytes();
+            
+            DatagramPacket respuesta = new DatagramPacket(buffer, buffer.length, direccion, puertocliente);
+            System.out.println("Enviando Informacion");
+            socketUDP.send(respuesta);
+            
+            
+        } catch (SocketException ex) {
+            Logger.getLogger(Servidor.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(Servidor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+}
+
+            Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+}
